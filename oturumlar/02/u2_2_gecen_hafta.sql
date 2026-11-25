@@ -13,18 +13,18 @@ FROM ham_ocak
 GROUP BY ALL;
 
 SELECT gun, gun_adi, yolculuk,
-       lag(yolculuk, ___) OVER (ORDER BY gun) AS gecen_hafta,   -- ① Bir hafta önceki gün kaç satır yukarıda?
+       lag(yolculuk, 7) OVER (ORDER BY gun) AS gecen_hafta,   -- ① Bir hafta önceki gün kaç satır yukarıda?
        yolculuk - gecen_hafta AS fark
 FROM gunluk
-ORDER BY ___ DESC                                               -- ② Sonuç hangi kolona göre sıralanmalı?
+ORDER BY fark DESC                                               -- ② Sonuç hangi kolona göre sıralanmalı?
 LIMIT 5;
 
 -- İleri görev: farkı yüzde olarak görmek. Aşağıdaki /* ve */ satırlarını silin, ③ numaralı boşluğu doldurun.
-/*
+
 SELECT gun, gun_adi, yolculuk,
        lag(yolculuk, 7) OVER (ORDER BY gun) AS gecen_hafta,
-       round(100.0 * (yolculuk - gecen_hafta) / ___, 1) AS yuzde   -- ③ Fark hangi kolona bölünmeli?
+       round(100.0 * (yolculuk - gecen_hafta) / gecen_hafta, 1) AS yuzde   -- ③ Fark hangi kolona bölünmeli?
 FROM gunluk
 ORDER BY yuzde DESC
 LIMIT 5;
-*/
+

@@ -5,7 +5,7 @@
 
 -- Adım 1: her günün satır sayısı ve geçen haftanın aynı gününe göre kaç kat olduğu
 SELECT gun, satir,
-       lag(satir, ___) OVER (ORDER BY gun) AS gecen_hafta,     -- ① Uygulama 2'deki sayı
+       lag(satir, 7) OVER (ORDER BY gun) AS gecen_hafta,     -- ① Uygulama 2'deki sayı
        round(satir / gecen_hafta, 2) AS kat
 FROM (SELECT transition_date AS gun, count(*) AS satir
       FROM lake.bronze.toplu_ulasim
@@ -22,7 +22,7 @@ GROUP BY ALL;
 -- Adım 3: tekrar gönderilen günlerin toplamı ikiye bölünür. // tam sayı bölmesidir.
 UPDATE gunluk_bronze
 SET yolculuk = yolculuk // 2
-WHERE gun IN (DATE '2024-01-10', DATE '___');                 -- ② Adım 1'in bulduğu Şubat günü: YYYY-AA-GG
+WHERE gun IN (DATE '2024-01-10', DATE '2024-02-14');                 -- ② Adım 1'in bulduğu Şubat günü: YYYY-AA-GG
 
 -- Adım 4: iki ayın bütün çarşambaları (dayofweek: 0 pazar, 3 çarşamba)
 SELECT gun, yolculuk
@@ -32,13 +32,13 @@ ORDER BY gun;
 
 -- İleri görev: Mart dosyasında da tekrar gönderilen bir gün var. Aşağıdaki /* ve */ satırlarını silin,
 -- ③ numaralı boşluğu doldurun ve günü bulun.
-/*
+
 SELECT gun, satir,
        lag(satir, 7) OVER (ORDER BY gun) AS gecen_hafta,
        round(satir / gecen_hafta, 2) AS kat
 FROM (SELECT transition_date AS gun, count(*) AS satir
-      FROM read_csv('veri/___')                               -- ③ Mart 2024 toplu ulaşım dosyasının adı
+      FROM read_csv('veri/toplu_ulasim_2024_03.csv.gz')                               -- ③ Mart 2024 toplu ulaşım dosyasının adı
       GROUP BY ALL)
 ORDER BY kat DESC
 LIMIT 3;
-*/
+

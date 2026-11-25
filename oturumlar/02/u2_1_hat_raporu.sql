@@ -5,21 +5,21 @@
 -- Sonuç M2'de en çok yolculuk yapılan beş günü gösterir. En üstteki günü ve yolculuğu sohbete yazın.
 
 SELECT transition_date AS gun,
-       sum(___) AS yolculuk                  -- ① Yolculuk sayısını taşıyan kolon
+       sum(number_of_passage) AS yolculuk                  -- ① Yolculuk sayısını taşıyan kolon
 FROM ham_ocak
 WHERE line_name = 'M2'
-GROUP BY ___                                 -- ② Sonuçta her gün bir satır olsun: hangi kolona göre gruplanır?
+GROUP BY transition_date                                 -- ② Sonuçta her gün bir satır olsun: hangi kolona göre gruplanır?
 ORDER BY yolculuk DESC
 LIMIT 5;
 
 -- İleri görev: kullandığınız bir hattın en kalabalık günleri. Aşağıdaki /* ve */ satırlarını silin,
 -- ③ numaralı boşluğa hattın kodunu yazın. Kod tek tırnak içinde ve verideki yazılışıyla yazılır: 'M4', 'MARMARAY', '34'.
-/*
+
 SELECT transition_date AS gun,
        sum(number_of_passage) AS yolculuk
 FROM ham_ocak
-WHERE line_name = ___                        -- ③ Hattın kodu, tek tırnak içinde
+WHERE line_name = 'M4'                        -- ③ Hattın kodu, tek tırnak içinde
 GROUP BY transition_date
 ORDER BY yolculuk DESC
 LIMIT 5;
-*/
+
